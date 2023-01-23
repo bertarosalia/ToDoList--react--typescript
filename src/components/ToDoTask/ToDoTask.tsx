@@ -2,11 +2,23 @@ import { Task } from "../../interfaces";
 
 interface Props {
   task: Task;
+  completeTask(tasknameToDelete: string): void;
 }
-const ToDoTask = ({ task }: Props): JSX.Element => {
+const ToDoTask = ({ task, completeTask }: Props): JSX.Element => {
   return (
-    <div>
-      {task.taskName} {task.deadline}
+    <div className="task">
+      <input type="checkbox" className="completeTaskCheckbox" />
+      <ul className="content">
+        <li>{task.taskName}</li>
+        <li>{task.deadline}</li>
+      </ul>
+      <button
+        onClick={() => {
+          completeTask(task.taskName);
+        }}
+      >
+        X
+      </button>
     </div>
   );
 };

@@ -1,13 +1,23 @@
-import { ChangeEvent, useState } from "react";
-import { compileFunction } from "vm";
+import { ChangeEvent, useEffect, useState } from "react";
 import "./App.css";
 import ToDoTask from "./components/ToDoTask/ToDoTask";
 import { Task } from "./interfaces";
+
+const key = "todoApp.todoList";
 
 const App = (): JSX.Element => {
   const [task, setTask] = useState<string>("");
   const [deadline, setDeadline] = useState<number>(0);
   const [todoList, setTodoList] = useState<Task[]>([]);
+
+  useEffect(() => {
+    const storedTodos = JSON.parse(localStorage.getItem(key) || "[]");
+    storedTodos ? setTodoList(storedTodos) : [];
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(todoList));
+  }, [todoList]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.name === "task") {
